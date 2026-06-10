@@ -1,0 +1,16 @@
+#main_title {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #333;
+    padding: 10px;
+    color: #ffff;
+    border: 1px solid #ccc;
+}
+
+.box1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}

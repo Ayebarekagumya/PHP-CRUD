@@ -1,27 +1,89 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+require_once "header1.php";
 
-    <title>Hello, world!</title>
-  </head>
-  <body>
-    <h1>Hello, world!</h1>
+include "crud.php";
+?>
+      <div class="box1">
+      <h2>All Students</h2>
+      <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Student</button>
+      </div>
+      <table class="table table-hover table-bordered table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Age</th>
+      <th scope="col">Update</th>
+      <th scope="col">Delete</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+<?php
 
-    <!-- Optional JavaScript; choose one of the two! -->
+$query="SELECT * FROM students";
+    
+    $result=mysqli_query($connection,$query);
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  if (!$result) {
+    die("Query failed: " . mysqli_error($connection));
+}
+    else{
+    while($row=mysqli_fetch_assoc($result)){
+      ?>
+      <tr>
+      <td><?php echo $row['id']; ?></td>
+      <td><?php echo $row['first_name']; ?></td>
+      <td><?php echo $row['last_name']; ?></td>
+      <td><?php echo $row['age']; ?></td>
+      <td><a href="update_page.php?id=<?php echo $row['id']; ?>" class="btn btn-success">Update</a></td>
+      <td><a href="delete_page.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a></td>
+    </tr>
+         <?php
+        }
+     }
+      ?>
+    </tbody>
+</table>
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
-  </body>
-</html>
+     <!-- Modal -->
+<form action="insert.php" method="POST">
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" name="first_name" class="form-control" id="firstName" placeholder="Enter first name">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" name="last_name" class="form-control" id="lastName" placeholder="Enter last name">
+          </div>
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" name="age" class="form-control" id="age" placeholder="Enter age">
+          </div>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-primary" name="add_student" value="ADD"></button> 
+      </div>
+    </div>
+  </div>
+</div>   
+ </form>
+<?php
+    include "footer.php";
+?>
+    
